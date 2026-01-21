@@ -165,3 +165,96 @@ def test_node_class_directly():
     node.next = node2
     assert node.next is node2
     assert node.next.value == 100
+
+
+# --- Tests for get method ---
+
+
+def test_get_first_element():
+    """Test get method retrieves the first element at index 0."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    assert ll.get(0) == 10
+
+
+def test_get_last_element():
+    """Test get method retrieves the last element."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    assert ll.get(2) == 30
+
+
+def test_get_middle_element():
+    """Test get method retrieves a middle element."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    ll.append(40)
+    assert ll.get(1) == 20
+    assert ll.get(2) == 30
+
+
+def test_get_single_element_list():
+    """Test get on a single-element list at index 0."""
+    ll = LinkedList(42)
+    assert ll.get(0) == 42
+
+
+def test_get_negative_index():
+    """Test get returns None for negative index."""
+    ll = LinkedList(10)
+    ll.append(20)
+    assert ll.get(-1) is None
+    assert ll.get(-10) is None
+
+
+def test_get_index_out_of_bounds():
+    """Test get returns None for index >= length."""
+    ll = LinkedList(10)
+    ll.append(20)
+    assert ll.length == 2
+    assert ll.get(2) is None
+    assert ll.get(3) is None
+    assert ll.get(100) is None
+
+
+def test_get_empty_list():
+    """Test get returns None for an empty list."""
+    ll = LinkedList(1)
+    ll.pop()  # Make it empty
+    assert ll.length == 0
+    assert ll.get(0) is None
+    assert ll.get(1) is None
+
+
+def test_get_boundary_index():
+    """Test get at boundary index (length - 1)."""
+    ll = LinkedList(5)
+    ll.append(10)
+    ll.append(15)
+    # length is 3, so valid indices are 0, 1, 2
+    assert ll.get(2) == 15  # Valid last index
+    assert ll.get(3) is None  # Out of bounds
+
+
+def test_get_after_modifications():
+    """Test get works correctly after list modifications."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+
+    # Get before modification
+    assert ll.get(1) == 2
+
+    # Pop and verify get still works
+    ll.pop()
+    assert ll.get(1) == 2
+    assert ll.get(2) is None  # No longer exists
+
+    # Prepend and verify indices shifted
+    ll.prepend(0)
+    assert ll.get(0) == 0
+    assert ll.get(1) == 1
+    assert ll.get(2) == 2

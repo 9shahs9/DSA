@@ -3,6 +3,7 @@ class Node:
         self.value = value
         self.next = None
 
+
 class LinkedList:
     def __init__(self, value):
         new_node = Node(value)
@@ -13,7 +14,7 @@ class LinkedList:
     def print_list(self):
         print("The new list is : ")
         temp = self.head
-        while(temp):
+        while temp:
             print(temp.value)
             temp = temp.next
         print("End of list")
@@ -26,8 +27,8 @@ class LinkedList:
         else:
             self.tail.next = new_Node
             self.tail = new_Node
-        self.length +=1
-        
+        self.length += 1
+
     def pop(self):
         current_node = self.head
         if current_node is None:
@@ -35,57 +36,62 @@ class LinkedList:
         if current_node.next is None:
             val = current_node.value
             self.head = None
-            self.tail = None 
+            self.tail = None
         else:
             while current_node.next != self.tail:
                 current_node = current_node.next
             val = self.tail.value
             self.tail = current_node
-            current_node.next = None 
-        self.length -=1
+            current_node.next = None
+        self.length -= 1
         return val
-    
 
     def pop_clean(self):
         if self.length == 0:
-            return None 
+            return None
         temp = self.head
-        pre=self.head
-        while(temp.next):
+        pre = self.head
+        while temp.next:
             pre = temp
             temp = temp.next
         self.tail = pre
         self.tail.next = None
-        self.length -=1
+        self.length -= 1
         if self.length == 0:
             self.head = None
-            self.tail = None 
+            self.tail = None
         return temp.value
-    
+
     def prepend(self, value):
         new_node = Node(value)
-        if self.length ==0:
+        if self.length == 0:
             self.head = new_node
             self.tail = new_node
         else:
             new_node.next = self.head
             self.head = new_node
-        self.length +=1
-
+        self.length += 1
 
     def pop_first(self):
         if self.length == 0:
             return None
         pop_node = self.head
         self.head = self.head.next
-        self.length -=1
+        self.length -= 1
+        if self.length == 0:
+            self.tail = None
         return pop_node.value
-    
 
-        
-        
-        
-
+    def get(self, idx):
+        if self.length == 0:
+            return None
+        if idx < 0 or idx >= self.length:
+            return None
+        temp = self.head
+        while idx > 0:
+            temp = temp.next
+            idx -= 1
+        return temp.value
 
 
 ll = LinkedList(4)
@@ -99,4 +105,3 @@ print(ll.print_list())
 
 print(ll.pop_first())
 print(ll.print_list())
-
