@@ -42,14 +42,43 @@ class LinkedList:
             current_node.next = None 
         self.length -=1
         return val
+    
+
+    def pop_clean(self):
+        if self.length == 0:
+            return None 
+        temp = self.head
+        pre=self.head
+        while(temp.next):
+            pre = temp
+            temp = temp.next
+        self.tail = pre 
+        self.length -=1
+        if self.length == 0:
+            self.head = None
+            self.tail = None 
+        return temp.value
+    
+    def prepend(self, value):
+        new_node = Node(value)
+        if self.length ==0:
+            self.head = new_node
+            self.tail = new_node
+        new_node.next = self.head
+        self.head = new_node
+        self.length +=1
+
+        
+        
+        
+
 
 
 ll = LinkedList(4)
 ll.append(10)
 print(ll.print_list())
-ll.pop()
+
+ll.pop_clean()
 print(ll.print_list())
-ll.pop()
-print(ll.print_list())
-ll.pop()
+ll.prepend(20)
 print(ll.print_list())
