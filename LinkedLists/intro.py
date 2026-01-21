@@ -11,10 +11,12 @@ class LinkedList:
         self.length = 1
 
     def print_list(self):
+        print("The new list is : ")
         temp = self.head
         while(temp):
             print(temp.value)
             temp = temp.next
+        print("End of list")
 
     def append(self, value):
         new_Node = Node(value)
@@ -69,6 +71,16 @@ class LinkedList:
             self.head = new_node
         self.length +=1
 
+
+    def pop_first(self):
+        if self.length == 0:
+            return None
+        pop_node = self.head
+        self.head = self.head.next
+        self.length -=1
+        return pop_node.value
+    
+
         
         
         
@@ -83,3 +95,7 @@ ll.pop_clean()
 print(ll.print_list())
 ll.prepend(20)
 print(ll.print_list())
+
+print(ll.pop_first())
+print(ll.print_list())
+
