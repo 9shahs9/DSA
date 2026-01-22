@@ -171,35 +171,50 @@ def test_node_class_directly():
 
 
 def test_get_first_element():
-    """Test get method retrieves the first element at index 0."""
+    """Test get method retrieves the first Node at index 0."""
     ll = LinkedList(10)
     ll.append(20)
     ll.append(30)
-    assert ll.get(0) == 10
+    node = ll.get(0)
+    assert node is not None
+    assert node.value == 10
+    assert node is ll.head
 
 
 def test_get_last_element():
-    """Test get method retrieves the last element."""
+    """Test get method retrieves the last Node."""
     ll = LinkedList(10)
     ll.append(20)
     ll.append(30)
-    assert ll.get(2) == 30
+    node = ll.get(2)
+    assert node is not None
+    assert node.value == 30
+    assert node is ll.tail
 
 
 def test_get_middle_element():
-    """Test get method retrieves a middle element."""
+    """Test get method retrieves a middle Node."""
     ll = LinkedList(10)
     ll.append(20)
     ll.append(30)
     ll.append(40)
-    assert ll.get(1) == 20
-    assert ll.get(2) == 30
+    node = ll.get(1)
+    assert node is not None
+    assert node.value == 20
+    
+    node = ll.get(2)
+    assert node is not None
+    assert node.value == 30
 
 
 def test_get_single_element_list():
     """Test get on a single-element list at index 0."""
     ll = LinkedList(42)
-    assert ll.get(0) == 42
+    node = ll.get(0)
+    assert node is not None
+    assert node.value == 42
+    assert node is ll.head
+    assert node is ll.tail
 
 
 def test_get_negative_index():
@@ -235,7 +250,9 @@ def test_get_boundary_index():
     ll.append(10)
     ll.append(15)
     # length is 3, so valid indices are 0, 1, 2
-    assert ll.get(2) == 15  # Valid last index
+    node = ll.get(2)  # Valid last index
+    assert node is not None
+    assert node.value == 15
     assert ll.get(3) is None  # Out of bounds
 
 
@@ -246,15 +263,389 @@ def test_get_after_modifications():
     ll.append(3)
 
     # Get before modification
-    assert ll.get(1) == 2
+    node = ll.get(1)
+    assert node is not None
+    assert node.value == 2
 
     # Pop and verify get still works
     ll.pop()
-    assert ll.get(1) == 2
+    node = ll.get(1)
+    assert node is not None
+    assert node.value == 2
     assert ll.get(2) is None  # No longer exists
 
     # Prepend and verify indices shifted
     ll.prepend(0)
-    assert ll.get(0) == 0
-    assert ll.get(1) == 1
-    assert ll.get(2) == 2
+    node = ll.get(0)
+    assert node is not None
+    assert node.value == 0
+    assert ll.get(1).value == 1
+    assert ll.get(2).value == 2
+
+# --- Tests for set_value method ---
+
+
+def test_set_value_first_element():
+    """Test set_value changes the first element (index 0)."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    
+    result = ll.set_value(0, 100)
+    assert result is True
+    assert ll.get(0).value == 100
+    assert ll.head.value == 100
+
+
+def test_set_value_last_element():
+    """Test set_value changes the last element."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    
+    result = ll.set_value(2, 300)
+    assert result is True
+    assert ll.get(2).value == 300
+    assert ll.tail.value == 300
+
+
+def test_set_value_middle_element():
+    """Test set_value changes a middle element."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    ll.append(40)
+    
+    result = ll.set_value(1, 200)
+    assert result is True
+    assert ll.get(1).value == 200
+    assert ll.get(0).value == 10  # Verify others unchanged
+    assert ll.get(2).value == 30
+    assert ll.get(3).value == 40
+
+
+def test_set_value_single_element_list():
+    """Test set_value on a single-element list."""
+    ll = LinkedList(42)
+    
+    result = ll.set_value(0, 99)
+    assert result is True
+    assert ll.get(0).value == 99
+    assert ll.head.value == 99
+    assert ll.tail.value == 99
+
+
+def test_set_value_negative_index():
+    """Test set_value returns False for negative index."""
+    ll = LinkedList(10)
+    ll.append(20)
+    
+    result = ll.set_value(-1, 100)
+    assert result is False
+    assert ll.get(0).value == 10  # Value should remain unchanged
+    assert ll.get(1).value == 20
+
+
+def test_set_value_index_out_of_bounds():
+    """Test set_value returns False for index >= length."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    
+    assert ll.length == 3
+    
+    # Test index equal to length
+    result = ll.set_value(3, 999)
+    assert result is False
+    
+    # Test index greater than length
+    result = ll.set_value(10, 999)
+    assert result is False
+    
+    # Verify no values changed
+    assert ll.get(0).value == 10
+    assert ll.get(1).value == 20
+    assert ll.get(2).value == 30
+
+
+def test_set_value_empty_list():
+    """Test set_value returns False on an empty list."""
+    ll = LinkedList(1)
+    ll.pop()  # Make it empty
+    
+    assert ll.length == 0
+    
+    result = ll.set_value(0, 100)
+    assert result is False
+
+
+def test_set_value_with_zero():
+    """Test set_value can set a value to zero."""
+    ll = LinkedList(10)
+    ll.append(20)
+    
+    result = ll.set_value(0, 0)
+    assert result is True
+    assert ll.get(0).value == 0
+
+
+def test_set_value_with_negative_value():
+    """Test set_value can set a value to a negative number."""
+    ll = LinkedList(10)
+    ll.append(20)
+    
+    result = ll.set_value(1, -50)
+    assert result is True
+    assert ll.get(1).value == -50
+
+
+def test_set_value_with_string():
+    """Test set_value can set string values."""
+    ll = LinkedList("hello")
+    ll.append("world")
+    
+    result = ll.set_value(0, "goodbye")
+    assert result is True
+    assert ll.get(0).value == "goodbye"
+    
+    result = ll.set_value(1, "universe")
+    assert result is True
+    assert ll.get(1).value == "universe"
+
+
+def test_set_value_multiple_operations():
+    """Test multiple set_value operations on the same list."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    
+    # First set
+    assert ll.set_value(0, 10) is True
+    assert ll.get(0).value == 10
+    
+    # Second set on different index
+    assert ll.set_value(2, 30) is True
+    assert ll.get(2).value == 30
+    
+    # Third set on same index
+    assert ll.set_value(1, 200) is True
+    assert ll.get(1).value == 200
+    
+    # Verify all values
+    assert ll.get(0).value == 10
+    assert ll.get(1).value == 200
+    assert ll.get(2).value == 30
+    assert ll.get(3).value == 4
+
+
+def test_set_value_boundary_indices():
+    """Test set_value at boundary indices (0 and length-1)."""
+    ll = LinkedList(5)
+    ll.append(10)
+    ll.append(15)
+    
+    # Set at index 0 (first element)
+    assert ll.set_value(0, 50) is True
+    assert ll.get(0).value == 50
+    
+    # Set at index length-1 (last element, index 2)
+    assert ll.set_value(2, 150) is True
+    assert ll.get(2).value == 150
+    
+    # Try to set at index length (out of bounds)
+    assert ll.set_value(3, 999) is False
+
+# --- Tests for insert method ---
+
+
+def test_insert_at_beginning():
+    """Test insert at index 0 (beginning of list)."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    
+    result = ll.insert(0, 5)
+    assert result is True
+    assert ll.length == 4
+    assert ll.head.value == 5
+    assert ll.get(0).value == 5
+    assert ll.get(1).value == 10
+    assert ll.get(2).value == 20
+    assert ll.get(3).value == 30
+
+
+def test_insert_in_middle():
+    """Test insert in the middle of the list."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(40)
+    
+    result = ll.insert(2, 30)
+    assert result is True
+    assert ll.length == 4
+    assert ll.get(0).value == 10
+    assert ll.get(1).value == 20
+    assert ll.get(2).value == 30
+    assert ll.get(3).value == 40
+
+
+def test_insert_at_end():
+    """Test insert at the end (at index equal to length)."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    
+    result = ll.insert(3, 40)
+    assert result is True
+    assert ll.length == 4
+    assert ll.get(3).value == 40
+
+
+def test_insert_single_element_at_beginning():
+    """Test insert at beginning of single-element list."""
+    ll = LinkedList(10)
+    
+    result = ll.insert(0, 5)
+    assert result is True
+    assert ll.length == 2
+    assert ll.head.value == 5
+    assert ll.get(0).value == 5
+    assert ll.get(1).value == 10
+
+
+def test_insert_single_element_at_end():
+    """Test insert at end of single-element list."""
+    ll = LinkedList(10)
+    
+    result = ll.insert(1, 20)
+    assert result is True
+    assert ll.length == 2
+    assert ll.get(0).value == 10
+    assert ll.get(1).value == 20
+
+
+def test_insert_negative_index():
+    """Test insert with negative index returns False."""
+    ll = LinkedList(10)
+    ll.append(20)
+    
+    result = ll.insert(-1, 5)
+    assert result is False
+    assert ll.length == 2
+    assert ll.get(0).value == 10
+    assert ll.get(1).value == 20
+
+
+def test_insert_index_beyond_length():
+    """Test insert with index beyond length returns False."""
+    ll = LinkedList(10)
+    ll.append(20)
+    
+    result = ll.insert(5, 100)
+    assert result is False
+    assert ll.length == 2
+
+
+def test_insert_multiple_values():
+    """Test multiple consecutive inserts."""
+    ll = LinkedList(10)
+    ll.append(40)
+    
+    assert ll.insert(1, 20) is True
+    assert ll.length == 3
+    
+    assert ll.insert(2, 30) is True
+    assert ll.length == 4
+    
+    assert ll.get(0).value == 10
+    assert ll.get(1).value == 20
+    assert ll.get(2).value == 30
+    assert ll.get(3).value == 40
+
+
+def test_insert_with_zero_value():
+    """Test insert with zero as value."""
+    ll = LinkedList(10)
+    ll.append(20)
+    
+    result = ll.insert(1, 0)
+    assert result is True
+    assert ll.length == 3
+    assert ll.get(1).value == 0
+
+
+def test_insert_with_negative_value():
+    """Test insert with negative number as value."""
+    ll = LinkedList(10)
+    ll.append(20)
+    
+    result = ll.insert(1, -5)
+    assert result is True
+    assert ll.length == 3
+    assert ll.get(1).value == -5
+
+
+def test_insert_with_string():
+    """Test insert with string values."""
+    ll = LinkedList("a")
+    ll.append("c")
+    
+    result = ll.insert(1, "b")
+    assert result is True
+    assert ll.length == 3
+    assert ll.get(0).value == "a"
+    assert ll.get(1).value == "b"
+    assert ll.get(2).value == "c"
+
+
+def test_insert_building_list():
+    """Test building a list using multiple inserts at index 0."""
+    ll = LinkedList(1)
+    
+    assert ll.insert(0, 2) is True
+    assert ll.insert(0, 3) is True
+    assert ll.insert(0, 4) is True
+    
+    assert ll.length == 4
+    assert ll.get(0).value == 4
+    assert ll.get(1).value == 3
+    assert ll.get(2).value == 2
+    assert ll.get(3).value == 1
+
+
+def test_insert_preserves_links():
+    """Test that insert properly maintains node links."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    
+    result = ll.insert(1, 15)
+    assert result is True
+    
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    
+    assert values == [10, 15, 20, 30]
+
+
+def test_insert_at_each_position():
+    """Test inserting at every valid position."""
+    ll = LinkedList(1)
+    ll.append(3)
+    
+    assert ll.insert(1, 2) is True
+    assert ll.length == 3
+    
+    ll2 = LinkedList(5)
+    assert ll2.insert(0, 1) is True
+    assert ll2.insert(1, 2) is True
+    assert ll2.insert(2, 3) is True
+    assert ll2.insert(3, 4) is True
+    
+    assert ll2.length == 5
+    for i in range(5):
+        assert ll2.get(i).value == i + 1
