@@ -1,0 +1,133 @@
+/* Shared CSS for pydoc-generated HTML docs
+   Slate backgrounds + white text, consistent across docs */
+
+:root {
+  --slate-bg: #0f172a;      /* page background */
+  --slate-panel: #111827;   /* panels/cards/sections */
+  --slate-deep: #0b1220;    /* code blocks/background accents */
+  --text-white: #ffffff;    /* primary text */
+  --text-muted: #e5e7eb;    /* subtle text */
+  --border-slate: rgba(255,255,255,0.08);
+  --link-accent: #60a5fa;   /* link color */
+}
+
+/* Reset & base */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--slate-bg);
+  color: var(--text-white);
+  font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Main container (wrap body content if present) */
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: var(--slate-panel);
+  border-radius: 12px;
+  border: 1px solid var(--border-slate);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+
+/* Heading table at top */
+table.heading {
+  width: 100%;
+  background-color: var(--slate-panel);
+  border-collapse: collapse;
+}
+tr.heading-text { background-color: var(--slate-panel) !important; }
+
+table.heading td.title,
+table.heading td.extra {
+  padding: 24px 32px !important;
+  color: var(--text-white);
+  border: none !important;
+}
+
+table.heading td.title strong.title a,
+table.heading td.extra a,
+a.white { color: var(--text-white) !important; text-decoration: none; }
+
+a.white:hover,
+table.heading td.extra a:hover { text-decoration: underline; }
+
+/* Sections */
+table.section {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr.decor.index-decor,
+tr.decor.title-decor { background-color: var(--slate-panel); }
+
+td.section-title {
+  padding: 16px 24px !important;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-white);
+  border: none !important;
+}
+
+td.singlecolumn {
+  padding: 20px 24px !important;
+  background-color: var(--slate-panel);
+  border: none !important;
+}
+
+/* Method names and definitions */
+dl dt {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background-color: var(--slate-panel);
+  border-left: 4px solid var(--border-slate);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-white);
+}
+
+dl dt a { color: var(--link-accent) !important; text-decoration: none; }
+dl dt a:hover { text-decoration: underline; }
+
+dl dd {
+  margin-left: 20px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: var(--slate-panel);
+  border-radius: 6px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  border-left: 2px solid var(--border-slate);
+}
+
+/* Code & inline code */
+.code, code, pre, .signature {
+  background-color: var(--slate-deep);
+  color: var(--text-white);
+  border: 1px solid var(--border-slate);
+  border-radius: 6px;
+}
+.code { padding: 2px 6px; display: inline-block; }
+pre { padding: 12px; overflow: auto; }
+
+/* Links */
+a, a:visited { color: var(--link-accent); }
+a:hover { opacity: 0.9; }
+
+/* Tables & borders */
+table { border-collapse: collapse; }
+th, td { border: 1px solid var(--border-slate); }
+
+/* Paragraphs */
+p { margin: 10px 0; line-height: 1.8; }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  table.heading td.title,
+  table.heading td.extra { padding: 16px !important; }
+  td.singlecolumn { padding: 16px !important; }
+  dl dt { font-size: 14px; }
+}
