@@ -43,9 +43,9 @@ def test_pop_multiple():
 
 def test_pop_clean_empty_and_single():
     ll = LinkedList(100)
-    # pop_clean on non-empty single should return value and make list empty
+    # pop_clean on non-empty single should return node and make list empty
     v = ll.pop_clean()
-    assert v == 100
+    assert v.value == 100
     assert ll.length == 0
     assert ll.head is None and ll.tail is None
     # pop_clean on empty returns None
@@ -71,11 +71,12 @@ def test_pop_first_behaviour():
     ll = LinkedList(7)
     ll.append(8)
     x = ll.pop_first()
-    assert x == 7
+    assert x.value == 7
     assert ll.length == 1
     assert ll.head.value == 8
     # pop_first until empty
-    assert ll.pop_first() == 8
+    node = ll.pop_first()
+    assert node.value == 8
     assert ll.pop_first() is None
 
 
@@ -86,11 +87,27 @@ def test_print_list_output(capsys):
     ll.print_list()
     captured = capsys.readouterr()
     out = captured.out
-    assert "The new list is" in out
-    assert "End of list" in out
-    assert "1" in out
-    assert "2" in out
-    assert "3" in out
+    assert "1 -> 2 -> 3 -> None" in out
+    assert "->" in out
+
+
+def test_print_empty_list(capsys):
+    """Test printing an empty list."""
+    ll = LinkedList(1)
+    ll.pop()
+    ll.print_list()
+    captured = capsys.readouterr()
+    out = captured.out
+    assert out.strip() == "None"
+
+
+def test_print_single_element(capsys):
+    """Test printing a single element list."""
+    ll = LinkedList(42)
+    ll.print_list()
+    captured = capsys.readouterr()
+    out = captured.out
+    assert "42 -> None" in out
 
 
 # --- New tests for improved coverage ---
@@ -124,14 +141,14 @@ def test_pop_clean_with_multiple_elements():
 
     # Pop the last element (4)
     val = ll.pop_clean()
-    assert val == 4
+    assert val.value == 4
     assert ll.length == 3
     assert ll.tail.value == 3
     assert ll.tail.next is None  # Verify tail.next is disconnected
 
     # Pop another element (3) - now this works correctly
     val = ll.pop_clean()
-    assert val == 3
+    assert val.value == 3
     assert ll.length == 2
     assert ll.tail.value == 2
     assert ll.tail.next is None
@@ -147,7 +164,7 @@ def test_pop_first_two_to_one_element():
 
     # Pop first element, leaving only one
     val = ll.pop_first()
-    assert val == 10
+    assert val.value == 10
     assert ll.length == 1
     assert ll.head.value == 20
     # Note: tail still points to the remaining element
@@ -649,3 +666,417 @@ def test_insert_at_each_position():
     assert ll2.length == 5
     for i in range(5):
         assert ll2.get(i).value == i + 1
+
+
+# --- Tests for remove method ---
+
+
+def test_remove_from_beginning():
+    """Test removing the first element from a list."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    
+    removed = ll.remove(0)
+    assert removed.value == 1
+    assert ll.length == 2
+    assert ll.head.value == 2
+
+
+def test_remove_from_end():
+    """Test removing the last element from a list."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    
+    removed = ll.remove(2)
+    assert removed.value == 3
+    assert ll.length == 2
+    assert ll.tail.value == 2
+
+
+def test_remove_from_middle():
+    """Test removing an element from the middle of the list."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    
+    removed = ll.remove(2)
+    assert removed.value == 3
+    assert ll.length == 3
+    assert ll.get(0).value == 1
+    assert ll.get(1).value == 2
+    assert ll.get(2).value == 4
+
+
+def test_remove_single_element():
+    """Test removing the only element in the list."""
+    ll = LinkedList(42)
+    
+    removed = ll.remove(0)
+    assert removed.value == 42
+    assert ll.length == 0
+    assert ll.head is None
+    assert ll.tail is None
+
+
+def test_remove_negative_index():
+    """Test that removing with a negative index returns None."""
+    ll = LinkedList(1)
+    ll.append(2)
+    
+    result = ll.remove(-1)
+    assert result is None
+    assert ll.length == 2
+
+
+def test_remove_index_out_of_bounds():
+    """Test that removing with an out-of-bounds index returns None."""
+    ll = LinkedList(1)
+    ll.append(2)
+    
+    result = ll.remove(5)
+    assert result is None
+    assert ll.length == 2
+    
+    result = ll.remove(2)
+    assert result is None
+    assert ll.length == 2
+
+
+def test_remove_from_empty_list():
+    """Test that removing from an empty list returns None."""
+    ll = LinkedList(1)
+    ll.pop()
+    
+    result = ll.remove(0)
+    assert result is None
+
+
+def test_remove_preserves_links():
+    """Test that remove properly maintains node links."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    ll.append(40)
+    ll.append(50)
+    
+    ll.remove(2)
+    
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    
+    assert values == [10, 20, 40, 50]
+    assert ll.length == 4
+
+
+def test_remove_multiple_sequential():
+    """Test removing multiple elements sequentially."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.append(5)
+    
+    assert ll.remove(1).value == 2
+    assert ll.length == 4
+    assert ll.remove(1).value == 3
+    assert ll.length == 3
+    assert ll.remove(1).value == 4
+    assert ll.length == 2
+    
+    assert ll.get(0).value == 1
+    assert ll.get(1).value == 5
+
+
+def test_remove_returned_node_isolated():
+    """Test that the removed node has its next pointer set to None."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    
+    removed = ll.remove(1)
+    assert removed.value == 2
+    assert removed.next is None
+
+
+def test_remove_all_elements():
+    """Test removing all elements from the list."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    
+    ll.remove(2)
+    ll.remove(1)
+    ll.remove(0)
+    
+    assert ll.length == 0
+    assert ll.head is None
+    assert ll.tail is None
+
+
+def test_remove_boundary_indices():
+    """Test removing at boundary indices (0 and length-1)."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    ll.append(40)
+    
+    first = ll.remove(0)
+    assert first.value == 10
+    assert ll.head.value == 20
+    
+    last = ll.remove(2)
+    assert last.value == 40
+    assert ll.tail.value == 30
+
+
+def test_remove_updates_length():
+    """Test that remove properly decrements the length."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    
+    initial_length = ll.length
+    ll.remove(2)
+    assert ll.length == initial_length - 1
+    
+    ll.remove(1)
+    assert ll.length == initial_length - 2
+
+
+# --- Tests for reverse method ---
+
+
+def test_reverse_empty_list():
+    """Test reversing an empty list."""
+    ll = LinkedList(1)
+    ll.pop()
+    
+    result = ll.reverse()
+    assert result is True
+    assert ll.length == 0
+
+
+def test_reverse_single_element():
+    """Test reversing a list with a single element."""
+    ll = LinkedList(42)
+    
+    result = ll.reverse()
+    assert result is True
+    assert ll.head.value == 42
+    assert ll.tail.value == 42
+    assert ll.length == 1
+
+
+def test_reverse_two_elements():
+    """Test reversing a list with two elements."""
+    ll = LinkedList(1)
+    ll.append(2)
+    
+    result = ll.reverse()
+    assert result is True
+    assert ll.head.value == 2
+    assert ll.tail.value == 1
+    assert ll.length == 2
+    assert ll.head.next.value == 1
+    assert ll.tail.next is None
+
+
+def test_reverse_three_elements():
+    """Test reversing a list with three elements."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    
+    result = ll.reverse()
+    assert result is True
+    assert ll.head.value == 3
+    assert ll.tail.value == 1
+    assert ll.length == 3
+    
+    # Verify the order
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    assert values == [3, 2, 1]
+
+
+def test_reverse_multiple_elements():
+    """Test reversing a list with multiple elements."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.append(5)
+    
+    result = ll.reverse()
+    assert result is True
+    assert ll.head.value == 5
+    assert ll.tail.value == 1
+    assert ll.length == 5
+    
+    # Verify the complete reversed order
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    assert values == [5, 4, 3, 2, 1]
+
+
+def test_reverse_twice():
+    """Test that reversing twice returns to original order."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    
+    # First reverse
+    ll.reverse()
+    node = ll.head
+    values_first = []
+    while node:
+        values_first.append(node.value)
+        node = node.next
+    assert values_first == [4, 3, 2, 1]
+    
+    # Second reverse
+    ll.reverse()
+    node = ll.head
+    values_second = []
+    while node:
+        values_second.append(node.value)
+        node = node.next
+    assert values_second == [1, 2, 3, 4]
+
+
+def test_reverse_preserves_length():
+    """Test that reverse preserves the length of the list."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    ll.append(40)
+    ll.append(50)
+    
+    original_length = ll.length
+    ll.reverse()
+    assert ll.length == original_length
+
+
+def test_reverse_with_duplicate_values():
+    """Test reversing a list with duplicate values."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(2)
+    ll.append(3)
+    ll.append(1)
+    
+    ll.reverse()
+    
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    assert values == [1, 3, 2, 2, 1]
+
+
+def test_reverse_all_links_correct():
+    """Test that all node links are correctly updated after reverse."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    
+    ll.reverse()
+    
+    # Check head to tail traversal
+    assert ll.head.value == 4
+    assert ll.head.next.value == 3
+    assert ll.head.next.next.value == 2
+    assert ll.head.next.next.next.value == 1
+    assert ll.head.next.next.next.next is None
+    
+    # Check tail
+    assert ll.tail.value == 1
+    assert ll.tail.next is None
+
+
+def test_reverse_head_tail_swap():
+    """Test that head and tail are swapped after reverse."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    
+    original_head = ll.head.value
+    original_tail = ll.tail.value
+    
+    ll.reverse()
+    
+    assert ll.head.value == original_tail
+    assert ll.tail.value == original_head
+
+
+def test_reverse_after_operations():
+    """Test reversing after various list operations."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.append(5)
+    
+    ll.remove(2)  # Remove 3
+    ll.prepend(0)
+    
+    ll.reverse()
+    
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    assert values == [5, 4, 2, 1, 0]
+
+
+def test_reverse_large_list():
+    """Test reversing a larger list."""
+    ll = LinkedList(1)
+    for i in range(2, 11):
+        ll.append(i)
+    
+    ll.reverse()
+    
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    
+    assert values == list(range(10, 0, -1))
+    assert ll.length == 10
+
+
+def test_reverse_with_strings():
+    """Test reversing a list with string values."""
+    ll = LinkedList("a")
+    ll.append("b")
+    ll.append("c")
+    ll.append("d")
+    
+    ll.reverse()
+    
+    node = ll.head
+    values = []
+    while node:
+        values.append(node.value)
+        node = node.next
+    
+    assert values == ["d", "c", "b", "a"]

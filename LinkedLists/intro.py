@@ -37,21 +37,25 @@ class LinkedList:
         self.length = 1
 
     def print_list(self):
-        """Print all values in the linked list to the console.
+        """Print the linked list in a visual format showing links between nodes.
         
-        Traverses the entire list from head to tail and prints each node's value
-        on a separate line, with "The new list is :" at the beginning and 
-        "End of list" at the end.
+        Displays the list as: value1 -> value2 -> value3 -> None
+        For an empty list, displays: None
         
         Returns:
             None
         """
-        print("The new list is : ")
+        if self.head is None:
+            print("None")
+            return
+        
         temp = self.head
+        result = []
         while temp:
-            print(temp.value)
+            result.append(str(temp.value))
             temp = temp.next
-        print("End of list")
+        
+        print(" -> ".join(result) + " -> None")
 
     def append(self, value):
         """Add a new node with the given value to the end of the list.
@@ -126,7 +130,7 @@ class LinkedList:
         if self.length == 0:
             self.head = None
             self.tail = None
-        return temp.value
+        return temp
 
     def prepend(self, value):
         """Add a new node with the given value to the beginning of the list.
@@ -168,7 +172,7 @@ class LinkedList:
         self.length -= 1
         if self.length == 0:
             self.tail = None
-        return pop_node.value
+        return pop_node
 
     def get(self, idx):
         """Retrieve the node at the specified index in the list.
@@ -244,4 +248,41 @@ class LinkedList:
             prev_node.next = new_node
         self.length +=1
         return True
+    
+    def remove(self, idx):
+        if idx <0 or idx >= self.length:
+            return None
+        if idx == 0:
+            return self.pop_first()
+        if idx == self.length - 1:
+            return self.pop_clean()
+        prev_node = self.get(idx-1)
+        return_node = prev_node.next
+        prev_node.next = return_node.next
+        self.length -= 1
+        return_node.next = None
+        return return_node
+    
+    def reverse(self):
+        if self.length <= 1:
+            return True
+        op_node = self.head
+        prev_node = self.head.next
+        curr_node = self.head.next 
+        self.head.next = None 
+        if curr_node.next is None:
+            prev_node.next = op_node
+        else:
+            while curr_node.next :
+                prev_node = curr_node
+                curr_node = curr_node.next 
+                prev_node.next = op_node
+                op_node = prev_node
+            curr_node.next = prev_node
+        temp = self.head 
+        self.head = self.tail
+        self.tail = temp
+        return True
+
+        
 
