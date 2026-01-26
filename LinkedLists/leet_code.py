@@ -1,3 +1,14 @@
+import pytest
+import sys
+import os
+
+# Add the LinkedLists directory to path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from intro import LinkedList
+
+
+
 """
 LL: Find Middle Node ( ** Interview Question)
 Implement the find_middle_node method for the LinkedList class.
