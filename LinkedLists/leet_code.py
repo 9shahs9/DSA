@@ -100,3 +100,125 @@ def find_kth_from_end(ll, k):
         fast = fast.next 
         slow = slow.next
     return slow 
+
+
+"""
+LL: Remove Duplicates ( ** Interview Question)
+You are given a singly linked list that contains integer values, where some of these values may be duplicated.
+
+Note: this linked list class does NOT have a tail which will make this method easier to implement.
+
+Your task is to implement a method called remove_duplicates() within the LinkedList class that removes all duplicate values from the list.
+
+Your method should not create a new list, but rather modify the existing list in-place, preserving the relative order of the nodes.
+
+You can implement the remove_duplicates() method in two different ways:
+
+
+
+Using a Set - This approach will have a time complexity of O(n), where n is the number of nodes in the linked list. You are allowed to use the provided Set data structure in your implementation.
+
+Without using a Set - This approach will have a time complexity of O(n^2), where n is the number of nodes in the linked list. You are not allowed to use any additional data structures for this implementation.
+
+
+
+Here is the method signature you need to implement:
+
+def remove_duplicates(self):
+
+
+Example:
+
+Input:
+
+LinkedList: 1 -> 2 -> 3 -> 1 -> 4 -> 2 -> 5
+
+Output:
+
+LinkedList: 1 -> 2 -> 3 -> 4 -> 5
+
+
+"""
+
+
+def remove_duplicates(ll):
+        seen = set()
+        prev = ll.head 
+        curr = ll.head 
+        while(curr != None):
+            if curr.value in seen:
+                prev.next = curr.next 
+            else:
+                seen.add(curr.value)
+                prev = curr
+            curr = curr.next
+
+
+def remove_duplicate_nested(ll):
+    curr = ll.head 
+    runner = ll.head 
+    while curr!=None :
+        while runner.next != None:
+            if curr.value == runner.next.value:
+                runner.next = runner.next.next 
+            runner = runner.next 
+        if curr.next == None:
+            break 
+        curr = curr.next 
+        runner = curr
+
+
+def binary_to_decimal(ll):
+        length = 0 
+        curr = ll.head 
+        while curr!=None:
+            length +=1 
+            curr = curr.next 
+        
+        value = 0 
+        curr = ll.head 
+        while curr!=None:
+            value += (2**(length-1))*curr.value 
+            length -=1 
+            curr = curr.next 
+        return value 
+
+
+
+
+
+def partition_list(ll, x):   
+    left_init = 0
+    right_init = 0
+    curr = ll.head
+    if curr == None:
+        return 
+    while(curr != None):
+        if curr.value < x:
+            if left_init == 0:
+                left = LinkedList(curr.value)
+                left_init = 1 
+            else: 
+                left.append(curr.value)
+        else:
+            if right_init == 0:
+                right = LinkedList(curr.value)
+                right_init = 1 
+            else:
+                right.append(curr.value)
+        curr = curr.next 
+    
+    ll.make_empty()
+    if left_init == 0:
+        ll = right 
+        return 
+    
+    ll = left 
+    if right_init == 0:
+        return 
+    curr = ll.head 
+    while(curr.next != None):
+        curr = curr.next 
+    curr.next = right.head 
+
+

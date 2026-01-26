@@ -6,7 +6,6 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from intro import LinkedList
-import leet_code
 
 
 
@@ -14,7 +13,7 @@ import leet_code
 def test_find_middle_node_single_element():
     """Test finding middle node in a single element list."""
     ll = LinkedList(1)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 1
     assert middle == ll.head
     assert middle == ll.tail
@@ -25,7 +24,7 @@ def test_find_middle_node_two_elements():
     Should return the first node of the second half (second element)."""
     ll = LinkedList(1)
     ll.append(2)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 2
     assert middle == ll.tail
 
@@ -36,7 +35,7 @@ def test_find_middle_node_three_elements():
     ll = LinkedList(1)
     ll.append(2)
     ll.append(3)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 2
 
 
@@ -47,7 +46,7 @@ def test_find_middle_node_four_elements():
     ll.append(2)
     ll.append(3)
     ll.append(4)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 3
 
 
@@ -59,7 +58,7 @@ def test_find_middle_node_five_elements():
     ll.append(3)
     ll.append(4)
     ll.append(5)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 3
 
 
@@ -72,7 +71,7 @@ def test_find_middle_node_six_elements():
     ll.append(4)
     ll.append(5)
     ll.append(6)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 4
 
 
@@ -86,7 +85,7 @@ def test_find_middle_node_seven_elements():
     ll.append(5)
     ll.append(6)
     ll.append(7)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 4
 
 
@@ -96,7 +95,7 @@ def test_find_middle_node_large_odd_list():
     for i in range(20, 100, 10):
         ll.append(i)
     # List: 10, 20, 30, 40, 50, 60, 70, 80, 90 (9 elements)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 50  # 5th element (index 4)
 
 
@@ -106,7 +105,7 @@ def test_find_middle_node_large_even_list():
     for i in range(2, 11):
         ll.append(i)
     # List: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 (10 elements)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 6  # First node of second half (index 5)
 
 
@@ -117,7 +116,7 @@ def test_find_middle_node_with_strings():
     ll.append("c")
     ll.append("d")
     ll.append("e")
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == "c"
 
 
@@ -130,7 +129,7 @@ def test_find_middle_node_with_negative_numbers():
     ll.append(1)
     ll.append(3)
     ll.append(5)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 0
 
 
@@ -141,7 +140,7 @@ def test_find_middle_node_with_duplicates():
     ll.append(2)
     ll.append(2)
     ll.append(3)
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 2
 
 
@@ -153,7 +152,7 @@ def test_find_middle_node_returns_correct_node_object():
     ll.append(4)
     ll.append(5)
     
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     
     # Verify it's the correct node by checking its position in the list
     assert middle.value == 3
@@ -168,7 +167,7 @@ def test_find_middle_node_traverses_once():
         ll.append(i)
     
     # This should work efficiently with the two-pointer approach
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 10  # Middle of 19 elements
 
 
@@ -185,7 +184,7 @@ def test_find_middle_node_after_operations():
     ll.remove(3)  # Remove 5
     # List is now: 2, 3, 4 (3 elements)
     
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 3
 
 
@@ -195,7 +194,7 @@ def test_find_middle_node_very_large_list():
     for i in range(2, 101):
         ll.append(i)
     
-    middle = leet_code.find_middle_node(ll)
+    middle = ll.leet_code_find_middle_node()
     assert middle.value == 51  # First node of second half (for 100 elements)
 
 
@@ -207,8 +206,8 @@ def test_find_middle_node_consistency():
     ll.append(40)
     ll.append(50)
     
-    middle1 = leet_code.find_middle_node(ll)
-    middle2 = leet_code.find_middle_node(ll)
+    middle1 = ll.leet_code_find_middle_node()
+    middle2 = ll.leet_code_find_middle_node()
     
     assert middle1 == middle2
     assert middle1.value == 30
@@ -220,7 +219,7 @@ def test_find_middle_node_consistency():
 def test_has_loop_no_loop_single_element():
     """Test that a single element list has no loop."""
     ll = LinkedList(1)
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is False
 
 
@@ -228,7 +227,7 @@ def test_has_loop_no_loop_two_elements():
     """Test that a two element list has no loop."""
     ll = LinkedList(1)
     ll.append(2)
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is False
 
 
@@ -239,7 +238,7 @@ def test_has_loop_no_loop_multiple_elements():
     ll.append(3)
     ll.append(4)
     ll.append(5)
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is False
 
 
@@ -252,7 +251,7 @@ def test_has_loop_with_loop_at_tail():
     # Create a loop: tail -> head
     ll.tail.next = ll.head
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is True
     
     # Clean up the loop
@@ -272,7 +271,7 @@ def test_has_loop_with_loop_to_middle():
     # Create a loop: tail -> second node
     ll.tail.next = second_node
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is True
     
     # Clean up the loop
@@ -290,7 +289,7 @@ def test_has_loop_with_self_loop():
     original_next = second_node.next
     second_node.next = second_node
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is True
     
     # Clean up the loop
@@ -303,7 +302,7 @@ def test_has_loop_large_list_no_loop():
     for i in range(2, 51):
         ll.append(i)
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is False
 
 
@@ -321,7 +320,7 @@ def test_has_loop_large_list_with_loop():
     # Create a loop: tail -> node at index 25
     ll.tail.next = node
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is True
     
     # Clean up the loop
@@ -339,7 +338,7 @@ def test_has_loop_after_operations_no_loop():
     ll.remove(2)  # Remove middle element
     ll.prepend(0)
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is False
 
 
@@ -354,7 +353,7 @@ def test_has_loop_with_loop_at_second_node():
     # Create a loop: tail -> second node
     ll.tail.next = ll.head.next
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is True
     
     # Clean up the loop
@@ -369,7 +368,7 @@ def test_has_loop_with_short_loop():
     # Create a loop: tail -> head
     ll.tail.next = ll.head
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is True
     
     # Clean up the loop
@@ -382,9 +381,9 @@ def test_has_loop_multiple_calls_no_loop():
     ll.append(2)
     ll.append(3)
     
-    result1 = leet_code.has_loop(ll)
-    result2 = leet_code.has_loop(ll)
-    result3 = leet_code.has_loop(ll)
+    result1 = ll.leet_code_has_loop()
+    result2 = ll.leet_code_has_loop()
+    result3 = ll.leet_code_has_loop()
     
     assert result1 is False
     assert result2 is False
@@ -400,8 +399,8 @@ def test_has_loop_multiple_calls_with_loop():
     # Create a loop
     ll.tail.next = ll.head.next
     
-    result1 = leet_code.has_loop(ll)
-    result2 = leet_code.has_loop(ll)
+    result1 = ll.leet_code_has_loop()
+    result2 = ll.leet_code_has_loop()
     
     assert result1 is True
     assert result2 is True
@@ -418,11 +417,11 @@ def test_has_loop_with_string_values():
     ll.append("d")
     
     # No loop initially
-    assert leet_code.has_loop(ll) is False
+    assert ll.leet_code_has_loop() is False
     
     # Create a loop
     ll.tail.next = ll.head.next
-    assert leet_code.has_loop(ll) is True
+    assert ll.leet_code_has_loop() is True
     
     # Clean up
     ll.tail.next = None
@@ -442,7 +441,7 @@ def test_has_loop_three_node_cycle():
     # Create a loop: tail -> third node (nodes 3, 4, 5 form a cycle)
     ll.tail.next = third_node
     
-    result = leet_code.has_loop(ll)
+    result = ll.leet_code_has_loop()
     assert result is True
     
     # Clean up the loop
@@ -460,7 +459,7 @@ def test_has_loop_does_not_modify_list():
     original_tail = ll.tail
     original_length = ll.length
     
-    leet_code.has_loop(ll)
+    ll.leet_code_has_loop()
     
     assert ll.head == original_head
     assert ll.tail == original_tail
@@ -475,7 +474,7 @@ def test_has_loop_does_not_modify_list():
 def test_find_kth_from_end_single_element_k1():
     """Test finding 1st from end in a single element list."""
     ll = LinkedList(1)
-    result = leet_code.find_kth_from_end(ll, 1)
+    result = ll.leet_code_find_kth_from_end(1)
     assert result is not None
     assert result.value == 1
     assert result == ll.head
@@ -484,7 +483,7 @@ def test_find_kth_from_end_single_element_k1():
 def test_find_kth_from_end_single_element_k2():
     """Test finding 2nd from end in a single element list (should return None)."""
     ll = LinkedList(1)
-    result = leet_code.find_kth_from_end(ll, 2)
+    result = ll.leet_code_find_kth_from_end(2)
     assert result is None
 
 
@@ -492,7 +491,7 @@ def test_find_kth_from_end_two_elements_k1():
     """Test finding 1st from end (last element) in a two element list."""
     ll = LinkedList(1)
     ll.append(2)
-    result = leet_code.find_kth_from_end(ll, 1)
+    result = ll.leet_code_find_kth_from_end(1)
     assert result.value == 2
     assert result == ll.tail
 
@@ -501,7 +500,7 @@ def test_find_kth_from_end_two_elements_k2():
     """Test finding 2nd from end (first element) in a two element list."""
     ll = LinkedList(1)
     ll.append(2)
-    result = leet_code.find_kth_from_end(ll, 2)
+    result = ll.leet_code_find_kth_from_end(2)
     assert result.value == 1
     assert result == ll.head
 
@@ -513,7 +512,7 @@ def test_find_kth_from_end_five_elements_k1():
     ll.append(3)
     ll.append(4)
     ll.append(5)
-    result = leet_code.find_kth_from_end(ll, 1)
+    result = ll.leet_code_find_kth_from_end(1)
     assert result.value == 5
 
 
@@ -524,7 +523,7 @@ def test_find_kth_from_end_five_elements_k3():
     ll.append(3)
     ll.append(4)
     ll.append(5)
-    result = leet_code.find_kth_from_end(ll, 3)
+    result = ll.leet_code_find_kth_from_end(3)
     assert result.value == 3
 
 
@@ -535,7 +534,7 @@ def test_find_kth_from_end_five_elements_k5():
     ll.append(3)
     ll.append(4)
     ll.append(5)
-    result = leet_code.find_kth_from_end(ll, 5)
+    result = ll.leet_code_find_kth_from_end(5)
     assert result.value == 1
 
 
@@ -544,7 +543,7 @@ def test_find_kth_from_end_k_exceeds_length():
     ll = LinkedList(1)
     ll.append(2)
     ll.append(3)
-    result = leet_code.find_kth_from_end(ll, 5)
+    result = ll.leet_code_find_kth_from_end(5)
     assert result is None
 
 
@@ -553,7 +552,7 @@ def test_find_kth_from_end_k_zero():
     ll = LinkedList(1)
     ll.append(2)
     ll.append(3)
-    result = leet_code.find_kth_from_end(ll, 0)
+    result = ll.leet_code_find_kth_from_end(0)
     # Depending on implementation, this might return None or the last element
     # The test validates current behavior
 
@@ -563,7 +562,7 @@ def test_find_kth_from_end_large_list_k1():
     ll = LinkedList(1)
     for i in range(2, 21):
         ll.append(i)
-    result = leet_code.find_kth_from_end(ll, 1)
+    result = ll.leet_code_find_kth_from_end(1)
     assert result.value == 20
 
 
@@ -574,7 +573,7 @@ def test_find_kth_from_end_large_list_k10():
         ll.append(i)
     # List: 1, 2, 3, ..., 20 (20 elements)
     # 10th from end should be 11 (20 - 10 + 1 = 11)
-    result = leet_code.find_kth_from_end(ll, 10)
+    result = ll.leet_code_find_kth_from_end(10)
     assert result.value == 11
 
 
@@ -588,7 +587,7 @@ def test_find_kth_from_end_middle_of_list():
     ll.append(60)
     ll.append(70)
     # 7 elements, 4th from end should be 40
-    result = leet_code.find_kth_from_end(ll, 4)
+    result = ll.leet_code_find_kth_from_end(4)
     assert result.value == 40
 
 
@@ -599,7 +598,7 @@ def test_find_kth_from_end_with_strings():
     ll.append("c")
     ll.append("d")
     ll.append("e")
-    result = leet_code.find_kth_from_end(ll, 2)
+    result = ll.leet_code_find_kth_from_end(2)
     assert result.value == "d"
 
 
@@ -610,7 +609,7 @@ def test_find_kth_from_end_with_negative_numbers():
     ll.append(-1)
     ll.append(0)
     ll.append(1)
-    result = leet_code.find_kth_from_end(ll, 3)
+    result = ll.leet_code_find_kth_from_end(3)
     assert result.value == -1
 
 
@@ -621,7 +620,7 @@ def test_find_kth_from_end_with_duplicates():
     ll.append(2)
     ll.append(3)
     ll.append(2)
-    result = leet_code.find_kth_from_end(ll, 2)
+    result = ll.leet_code_find_kth_from_end(2)
     assert result.value == 3
 
 
@@ -633,7 +632,7 @@ def test_find_kth_from_end_returns_node_not_value():
     ll.append(40)
     ll.append(50)
     
-    result = leet_code.find_kth_from_end(ll, 3)
+    result = ll.leet_code_find_kth_from_end(3)
     assert result.value == 30
     assert result.next.value == 40
     assert result.next.next.value == 50
@@ -651,7 +650,7 @@ def test_find_kth_from_end_after_operations():
     ll.prepend(0)
     # List is now: 0, 1, 2, 4, 5 (5 elements)
     
-    result = leet_code.find_kth_from_end(ll, 2)
+    result = ll.leet_code_find_kth_from_end(2)
     assert result.value == 4
 
 
@@ -663,10 +662,10 @@ def test_find_kth_from_end_all_positions():
     ll.append(4)
     
     # 4 elements: 1, 2, 3, 4
-    assert leet_code.find_kth_from_end(ll, 1).value == 4
-    assert leet_code.find_kth_from_end(ll, 2).value == 3
-    assert leet_code.find_kth_from_end(ll, 3).value == 2
-    assert leet_code.find_kth_from_end(ll, 4).value == 1
+    assert ll.leet_code_find_kth_from_end(1).value == 4
+    assert ll.leet_code_find_kth_from_end(2).value == 3
+    assert ll.leet_code_find_kth_from_end(3).value == 2
+    assert ll.leet_code_find_kth_from_end(4).value == 1
 
 
 def test_find_kth_from_end_does_not_modify_list():
@@ -680,7 +679,7 @@ def test_find_kth_from_end_does_not_modify_list():
     original_tail = ll.tail
     original_length = ll.length
     
-    leet_code.find_kth_from_end(ll, 2)
+    ll.leet_code_find_kth_from_end(2)
     
     assert ll.head == original_head
     assert ll.tail == original_tail
@@ -695,8 +694,8 @@ def test_find_kth_from_end_consistency():
     ll.append(40)
     ll.append(50)
     
-    result1 = leet_code.find_kth_from_end(ll, 3)
-    result2 = leet_code.find_kth_from_end(ll, 3)
+    result1 = ll.leet_code_find_kth_from_end(3)
+    result2 = ll.leet_code_find_kth_from_end(3)
     
     assert result1 == result2
     assert result1.value == 30
@@ -709,7 +708,7 @@ def test_find_kth_from_end_very_large_list():
         ll.append(i)
     
     # 100 elements, 50th from end should be 51 (100 - 50 + 1)
-    result = leet_code.find_kth_from_end(ll, 50)
+    result = ll.leet_code_find_kth_from_end(50)
     assert result.value == 51
 
 
@@ -722,6 +721,6 @@ def test_find_kth_from_end_edge_case_k_equals_length():
     ll.append(25)
     
     # 5 elements, 5th from end should be the first element
-    result = leet_code.find_kth_from_end(ll, 5)
+    result = ll.leet_code_find_kth_from_end(5)
     assert result.value == 5
     assert result == ll.head

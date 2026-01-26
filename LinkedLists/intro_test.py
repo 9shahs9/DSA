@@ -1080,3 +1080,113 @@ def test_reverse_with_strings():
         node = node.next
     
     assert values == ["d", "c", "b", "a"]
+
+
+# --- Tests for leet_code_* LinkedList methods ---
+
+
+def _values_from_head(ll):
+    values = []
+    node = ll.head
+    while node:
+        values.append(node.value)
+        node = node.next
+    return values
+
+
+def test_leet_code_find_middle_node_even_and_odd():
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    assert ll.leet_code_find_middle_node().value == 2
+
+    ll.append(4)
+    assert ll.leet_code_find_middle_node().value == 3
+
+
+def test_leet_code_has_loop_detects_cycle():
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    assert ll.leet_code_has_loop() is False
+
+    ll.tail.next = ll.head
+    assert ll.leet_code_has_loop() is True
+    ll.tail.next = None
+
+
+def test_leet_code_find_kth_from_end_basic():
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    ll.append(40)
+
+    assert ll.leet_code_find_kth_from_end(1).value == 40
+    assert ll.leet_code_find_kth_from_end(2).value == 30
+    assert ll.leet_code_find_kth_from_end(4).value == 10
+    assert ll.leet_code_find_kth_from_end(5) is None
+
+
+def test_leet_code_remove_duplicates_set_based():
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(1)
+    ll.append(3)
+    ll.append(2)
+
+    ll.leet_code_remove_duplicates()
+    assert _values_from_head(ll) == [1, 2, 3]
+
+
+def test_leet_code_remove_duplicate_nested():
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(2)
+    ll.append(3)
+    ll.append(1)
+
+    ll.leet_code_remove_duplicate_nested()
+    assert _values_from_head(ll) == [1, 2, 3]
+
+
+def test_leet_code_binary_to_decimal():
+    ll = LinkedList(1)
+    ll.append(0)
+    ll.append(1)
+    ll.append(1)
+    assert ll.leet_code_binary_to_decimal() == 11
+
+
+def test_leet_code_partition_list_value_order():
+    ll = LinkedList(3)
+    ll.append(8)
+    ll.append(5)
+    ll.append(10)
+    ll.append(2)
+    ll.append(1)
+
+    ll.leet_code_partition_list(5)
+    assert _values_from_head(ll) == [3, 2, 1, 8, 5, 10]
+
+
+def test_leet_code_partition_list_dummy_nodes_value_order():
+    ll = LinkedList(1)
+    ll.append(4)
+    ll.append(3)
+    ll.append(2)
+    ll.append(5)
+    ll.append(2)
+
+    ll.leet_code_partition_list_dummy_nodes(3)
+    assert _values_from_head(ll) == [1, 2, 2, 4, 3, 5]
+
+
+def test_leet_code_reverse_between_sublist():
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.append(5)
+
+    ll.leet_code_reverse_between(1, 3)
+    assert _values_from_head(ll) == [1, 4, 3, 2, 5]
