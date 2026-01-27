@@ -1190,3 +1190,112 @@ def test_leet_code_reverse_between_sublist():
 
     ll.leet_code_reverse_between(1, 3)
     assert _values_from_head(ll) == [1, 4, 3, 2, 5]
+
+
+def test_swap_pairs_empty_list():
+    """Test swap_pairs on a list with only one node (nothing to swap)."""
+    ll = LinkedList(1)
+    ll.pop()  # make it empty
+    ll.swap_pairs()
+    assert ll.head is None
+    assert ll.tail is None
+
+
+def test_swap_pairs_single_node():
+    """Test swap_pairs on a list with only one node (nothing to swap)."""
+    ll = LinkedList(1)
+    ll.swap_pairs()
+    assert ll.head.value == 1
+    assert ll.tail.value == 1
+    assert ll.head.next is None
+
+
+def test_swap_pairs_two_nodes():
+    """Test swap_pairs on a list with exactly two nodes."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.swap_pairs()
+    assert _values_from_head(ll) == [2, 1]
+    assert ll.head.value == 2
+    assert ll.tail.value == 1
+
+
+def test_swap_pairs_three_nodes():
+    """Test swap_pairs on a list with three nodes (one pair swapped, one node remains)."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.swap_pairs()
+    assert _values_from_head(ll) == [2, 1, 3]
+    assert ll.head.value == 2
+    assert ll.tail.value == 3
+
+
+def test_swap_pairs_four_nodes():
+    """Test swap_pairs on a list with four nodes (two pairs swapped)."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.swap_pairs()
+    assert _values_from_head(ll) == [2, 1, 4, 3]
+    assert ll.head.value == 2
+    assert ll.tail.value == 3
+
+
+def test_swap_pairs_five_nodes():
+    """Test swap_pairs on a list with five nodes (two pairs swapped, one node remains)."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.append(5)
+    ll.swap_pairs()
+    assert _values_from_head(ll) == [2, 1, 4, 3, 5]
+    assert ll.head.value == 2
+    assert ll.tail.value == 5
+
+
+def test_swap_pairs_six_nodes():
+    """Test swap_pairs on a list with six nodes (three pairs swapped)."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.append(5)
+    ll.append(6)
+    ll.swap_pairs()
+    assert _values_from_head(ll) == [2, 1, 4, 3, 6, 5]
+    assert ll.head.value == 2
+    assert ll.tail.value == 5
+
+
+def test_swap_pairs_multiple_times():
+    """Test calling swap_pairs twice returns to original order."""
+    ll = LinkedList(1)
+    ll.append(2)
+    ll.append(3)
+    ll.append(4)
+    ll.swap_pairs()
+    assert _values_from_head(ll) == [2, 1, 4, 3]
+    ll.swap_pairs()
+    assert _values_from_head(ll) == [1, 2, 3, 4]
+
+
+def test_swap_pairs_head_tail_references():
+    """Test that head and tail references are correctly updated after swap_pairs."""
+    ll = LinkedList(10)
+    ll.append(20)
+    ll.append(30)
+    ll.append(40)
+    
+    ll.swap_pairs()
+    
+    # Head should point to the first node after swapping
+    assert ll.head.value == 20
+    
+    # Tail should point to the last node
+    assert ll.tail.value == 30
+    
+    # Verify tail.next is None
+    assert ll.tail.next is None
