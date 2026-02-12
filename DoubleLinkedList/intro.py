@@ -1,4 +1,5 @@
 class Node:
+    """Node with value and bidirectional links."""
     def __init__(self, value):
         self.value = value
         self.next = None
@@ -6,6 +7,7 @@ class Node:
 
 
 class DoubleLinkedList:
+    """Doubly linked list with head, tail, and length."""
 
     def __init__(self, value):
         new_node = Node(value)
@@ -22,8 +24,9 @@ class DoubleLinkedList:
         print("End of list")
 
     def append(self, value):
+        """Add node to end, maintaining both links."""
         new_node = Node(value)
-        if self.head is None:
+        if self.head is None:  # empty list
             self.head = new_node
         else:
             self.tail.next = new_node
@@ -33,11 +36,12 @@ class DoubleLinkedList:
         return True 
 
     def pop(self):
+        """Remove and return last node."""
         if self.length == 0:
             return None 
         ret_node = self.tail
-        self.length -=1 
-        if self.length == 0:
+        self.length -= 1 
+        if self.length == 0:  # last node
             self.head = None 
             self.tail = None 
         else:
@@ -48,10 +52,11 @@ class DoubleLinkedList:
         
     
     def prepend(self, value):
+        """Add node to front."""
         new_node = Node(value)
         new_node.next = self.head
-        self.length +=1
-        if self.length == 1:
+        self.length += 1
+        if self.length == 1:  # first in list
             self.head = new_node
             self.tail = new_node
         else:
@@ -61,11 +66,12 @@ class DoubleLinkedList:
         
     
     def pop_first(self):
+        """Remove and return first node."""
         ret_node = self.head 
         if self.length == 0:
             return None 
-        self.length -=1 
-        if self.length == 0:
+        self.length -= 1 
+        if self.length == 0:  # last node
             self.head = None 
             self.tail = None 
         else: 
@@ -76,7 +82,8 @@ class DoubleLinkedList:
 
     
     def get(self, idx):
-        if idx <0 or idx >= self.length:
+        """Return node at index or None."""
+        if idx < 0 or idx >= self.length:
             return None 
         curr = self.head 
         for _ in range(idx):
@@ -84,6 +91,7 @@ class DoubleLinkedList:
         return curr 
     
     def set(self, idx, value):
+        """Update value at index."""
         node = self.get(idx)
         if node is None:
             return False 
@@ -91,15 +99,17 @@ class DoubleLinkedList:
         return True 
 
     def insert(self, idx, value):
+        """Insert node at index."""
         node = Node(value)
-        if idx <0 or idx > self.length:  #Validate the condition here later.
+        if idx < 0 or idx > self.length:  # invalid range
             return False
-        if idx == self.length:
+        if idx == self.length:  # append case
             return self.append(value)
-        if idx == 0:
+        if idx == 0:  # prepend case
             return self.prepend(value)
         
-        prev = self.get(idx-1)
+        # middle insertion: link both directions
+        prev = self.get(idx - 1)
         node.prev = prev 
         node.next = prev.next 
         prev.next = node 
@@ -109,15 +119,17 @@ class DoubleLinkedList:
 
     
     def remove(self, idx):
-        if idx <0 or idx >= self.length:
+        """Remove and return node at index."""
+        if idx < 0 or idx >= self.length:
             return None 
         prev = self.head 
-        if idx == 0:  #remove head case. 
+        if idx == 0:  # remove head
             return self.pop_first()
-        if idx == self.length - 1:
+        if idx == self.length - 1:  # remove tail
             return self.pop()
 
-        for _ in range(idx-1):
+        # middle removal: unlink and reconnect both directions
+        for _ in range(idx - 1):
             prev = prev.next 
         curr = prev.next 
         prev.next = curr.next 
@@ -127,19 +139,16 @@ class DoubleLinkedList:
         self.length -= 1
         return curr 
             
-
-        
-
-
-
     def reverse(self):
+        """Reverse list by swapping next/prev pointers."""
         temp = None
         current_node = self.head
-        while current_node:
+        while current_node:  # swap pointers for each node
             temp = current_node.prev
             current_node.prev = current_node.next
             current_node.next = temp
             current_node = current_node.prev
+        # swap head and tail
         t = self.head
         self.head = self.tail
         self.tail = t
