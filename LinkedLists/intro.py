@@ -1,50 +1,24 @@
 class Node:
-    """Represents a single node in the linked list.
-    
-    Attributes:
-        value: The data stored in this node.
-        next: Reference to the next node in the linked list (None if this is the last node).
-    """
+    """Single linked-list node."""
     
     def __init__(self, value):
-        """Initialize a new node with a given value.
-        
-        Args:
-            value: The data to be stored in this node.
-        """
+        """Create a node with a value and no next."""
         self.value = value
         self.next = None
 
 
 class LinkedList:
-    """A singly linked list implementation.
-    
-    Attributes:
-        head: Reference to the first node in the list.
-        tail: Reference to the last node in the list.
-        length: The number of nodes currently in the list.
-    """
+    """Singly linked list with head, tail, and length."""
     
     def __init__(self, value):
-        """Initialize a new linked list with a single node.
-        
-        Args:
-            value: The value for the initial node.
-        """
+        """Create a list with one node."""
         new_node = Node(value)
         self.head = new_node
         self.tail = new_node
         self.length = 1
 
     def print_list(self):
-        """Print the linked list in a visual format showing links between nodes.
-        
-        Displays the list as: value1 -> value2 -> value3 -> None
-        For an empty list, displays: None
-        
-        Returns:
-            None
-        """
+        """Print values as v1 -> v2 -> ... -> None."""
         if self.head is None:
             print("None")
             return
@@ -58,18 +32,7 @@ class LinkedList:
         print(" -> ".join(result) + " -> None")
 
     def append(self, value):
-        """Add a new node with the given value to the end of the list.
-        
-        If the list is empty, both head and tail are set to the new node.
-        Otherwise, the new node is linked to the current tail, and the tail
-        reference is updated. The length is always incremented by 1.
-        
-        Args:
-            value: The value to be added to the end of the list.
-            
-        Returns:
-            None
-        """
+        """Add a node to the end."""
         new_Node = Node(value)
         if self.head is None:
             self.head = new_Node
@@ -80,16 +43,7 @@ class LinkedList:
         self.length += 1
 
     def pop(self):
-        """Remove and return the value of the last node in the list.
-        
-        If the list is empty, returns None. If there's only one node, both head
-        and tail are set to None. Otherwise, traverses to the node before the tail,
-        updates the tail reference, and removes the link to the old tail.
-        The length is decremented by 1 on every pop.
-        
-        Returns:
-            The value of the last node, or None if the list is empty.
-        """
+        """Remove and return the last value."""
         current_node = self.head
         if current_node is None:
             return None
@@ -107,16 +61,7 @@ class LinkedList:
         return val
 
     def pop_clean(self):
-        """Remove and return the value of the last node using two-pointer traversal.
-        
-        An alternative pop implementation that uses two pointers (pre and temp)
-        to traverse the list. Returns None if the list is empty. When the list
-        becomes empty after popping, both head and tail are set to None.
-        The length is always decremented by 1.
-        
-        Returns:
-            The value of the last node, or None if the list is empty.
-        """
+        """Pop using two pointers; return the last node."""
         if self.length == 0:
             return None
         temp = self.head
@@ -133,19 +78,7 @@ class LinkedList:
         return temp
 
     def prepend(self, value):
-        """Add a new node with the given value to the beginning of the list.
-        
-        If the list is empty, both head and tail are set to the new node.
-        Otherwise, the new node's next pointer is set to the current head,
-        and the head reference is updated to the new node. The length is
-        always incremented by 1.
-        
-        Args:
-            value: The value to be added to the beginning of the list.
-            
-        Returns:
-            None
-        """
+        """Add a node to the front."""
         new_node = Node(value)
         if self.length == 0:
             self.head = new_node
@@ -156,15 +89,7 @@ class LinkedList:
         self.length += 1
 
     def pop_first(self):
-        """Remove and return the value of the first node in the list.
-        
-        Returns None if the list is empty. Updates the head reference to point
-        to the next node. If the list becomes empty after the pop, the tail is
-        also set to None. The length is always decremented by 1.
-        
-        Returns:
-            The value of the first node, or None if the list is empty.
-        """
+        """Remove and return the first node."""
         if self.length == 0:
             return None
         pop_node = self.head
@@ -175,19 +100,7 @@ class LinkedList:
         return pop_node
 
     def get(self, idx):
-        """Retrieve the node at the specified index in the list.
-        
-        Returns the actual Node object (not just the value) at the given index.
-        Returns None if the list is empty, if the index is negative, or if the
-        index is out of bounds (>= length). Indices are 0-based, where 0 refers
-        to the head node.
-        
-        Args:
-            idx: The index of the node to retrieve (0-based).
-            
-        Returns:
-            The Node object at the specified index, or None if not found.
-        """
+        """Return the node at index, or None."""
         if self.length == 0:
             return None
         if idx < 0 or idx >= self.length:
@@ -199,19 +112,7 @@ class LinkedList:
         return temp
     
     def set_value(self, idx, value):
-        """Set the value of the node at the specified index.
-        
-        Uses the get() method to locate the node at the given index, and if found,
-        updates its value. Returns True if the value was successfully set, False
-        otherwise (if the index is invalid or out of bounds).
-        
-        Args:
-            idx: The index of the node to update (0-based).
-            value: The new value to set at that index.
-            
-        Returns:
-            True if the value was set successfully, False otherwise.
-        """
+        """Set value at index; return success."""
         temp = self.get(idx)
         if temp:
             temp.value = value
@@ -220,22 +121,7 @@ class LinkedList:
 
 
     def insert(self, idx, value):
-        """Insert a new node with the given value at the specified index.
-        
-        If the index is invalid (negative or greater than length), returns False
-        without modifying the list. If the index is 0, the new node becomes the
-        head. Otherwise, the new node is inserted after the node at (idx-1).
-        Valid indices range from 0 to length (inclusive), where inserting at
-        length appends to the end of the list. The length is always incremented
-        by 1 upon successful insertion.
-        
-        Args:
-            idx: The index at which to insert the new node (0-based).
-            value: The value to be inserted.
-            
-        Returns:
-            True if the insertion was successful, False if the index is invalid.
-        """
+        """Insert value at index; return success."""
         if idx <0 or idx > self.length:
             return False
         new_node = Node(value)
@@ -417,16 +303,11 @@ class LinkedList:
 
 
     def leet_code_reverse_between(self, st_idx, end_idx):
-        """ Key assumptions: 
-        1. No length attribute available. 
-        2. No tail attribute available. 
-        3. st_idx and end_idx would be within bounds
-        4. can't use self.get """
-        
-        ' Code all exceptions here '
+        """Reverse sublist from st_idx to end_idx (inclusive)."""
+
         if self.head == None or self.head.next == None:
             return 
-        'dummy node'
+        # Dummy node to simplify head changes.
         d1 = Node(0)
         d1.next = self.head 
 

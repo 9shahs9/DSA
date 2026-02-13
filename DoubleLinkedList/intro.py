@@ -85,9 +85,14 @@ class DoubleLinkedList:
         """Return node at index or None."""
         if idx < 0 or idx >= self.length:
             return None 
-        curr = self.head 
-        for _ in range(idx):
-            curr = curr.next 
+        if idx < self.length/2:
+            curr = self.head 
+            for _ in range(idx):
+                curr = curr.next 
+        else:
+            curr = self.tail 
+            for _ in range(self.length - idx - 1):
+                curr = curr.prev 
         return curr 
     
     def set(self, idx, value):
