@@ -570,3 +570,348 @@ def test_all_methods_maintain_length():
     
     dll.remove(0)
     assert dll.length == 1
+
+def test_is_palindrome_single_element():
+    """Single element list is a palindrome."""
+    dll = DoubleLinkedList(1)
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_two_identical_elements():
+    """Two identical elements form a palindrome."""
+    dll = DoubleLinkedList(5)
+    dll.append(5)
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_two_different_elements():
+    """Two different elements do not form a palindrome."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    assert dll.is_palindrome() is False
+
+
+def test_is_palindrome_odd_length_palindrome():
+    """Odd length palindrome: 1-2-1."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(1)
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_odd_length_non_palindrome():
+    """Odd length non-palindrome: 1-2-3."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(3)
+    assert dll.is_palindrome() is False
+
+
+def test_is_palindrome_even_length_palindrome():
+    """Even length palindrome: 1-2-2-1."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(2)
+    dll.append(1)
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_even_length_non_palindrome():
+    """Even length non-palindrome: 1-2-3-4."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(3)
+    dll.append(4)
+    assert dll.is_palindrome() is False
+
+
+def test_is_palindrome_longer_palindrome():
+    """Longer palindrome: 1-2-3-2-1."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(3)
+    dll.append(2)
+    dll.append(1)
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_longer_even_palindrome():
+    """Longer even length palindrome: 1-2-3-3-2-1."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(3)
+    dll.append(3)
+    dll.append(2)
+    dll.append(1)
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_all_same_elements():
+    """All same elements form a palindrome."""
+    dll = DoubleLinkedList(7)
+    dll.append(7)
+    dll.append(7)
+    dll.append(7)
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_string_values():
+    """Palindrome with string values: a-b-a."""
+    dll = DoubleLinkedList("a")
+    dll.append("b")
+    dll.append("a")
+    assert dll.is_palindrome() is True
+
+
+def test_is_palindrome_string_non_palindrome():
+    """Non-palindrome with string values: a-b-c."""
+    dll = DoubleLinkedList("a")
+    dll.append("b")
+    dll.append("c")
+    assert dll.is_palindrome() is False
+
+
+def test_is_palindrome_complex_palindrome():
+    """Complex palindrome: 10-20-30-20-10."""
+    dll = DoubleLinkedList(10)
+    dll.append(20)
+    dll.append(30)
+    dll.append(20)
+    dll.append(10)
+    assert dll.is_palindrome() is True
+
+
+# ===================== make_empty tests =====================
+
+def test_make_empty_single_element():
+    """Make empty on single element list."""
+    dll = DoubleLinkedList(1)
+    dll.make_empty()
+    assert dll.head is None
+    assert dll.tail is None
+    assert dll.length == 0
+
+
+def test_make_empty_multiple_elements():
+    """Make empty on list with multiple elements."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(3)
+    dll.make_empty()
+    assert dll.head is None
+    assert dll.tail is None
+    assert dll.length == 0
+
+
+def test_make_empty_then_append():
+    """After make_empty, list can be used again."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.make_empty()
+    dll.append(10)
+    assert dll.head.value == 10
+    assert dll.tail.value == 10
+    assert dll.length == 1
+    assert dll.head is dll.tail
+
+
+def test_make_empty_idempotent():
+    """Calling make_empty twice should be safe."""
+    dll = DoubleLinkedList(1)
+    dll.make_empty()
+    dll.make_empty()
+    assert dll.head is None
+    assert dll.tail is None
+    assert dll.length == 0
+
+
+# ===================== partition_list tests =====================
+
+def test_partition_list_basic():
+    """Partition list: elements < x come before elements >= x."""
+    dll = DoubleLinkedList(3)
+    dll.append(5)
+    dll.append(8)
+    dll.append(5)
+    dll.append(10)
+    dll.append(2)
+    dll.append(1)
+    
+    dll.partition_list(5)
+    
+    values = _values_forward(dll)
+    # All elements < 5 should come first: [3, 2, 1]
+    # All elements >= 5 should come after: [5, 8, 5, 10]
+    assert values == [3, 2, 1, 5, 8, 5, 10]
+
+
+def test_partition_list_all_less_than_x():
+    """All elements less than x."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(3)
+    
+    dll.partition_list(10)
+    
+    assert _values_forward(dll) == [1, 2, 3]
+    assert _values_backward(dll) == [3, 2, 1]
+
+
+def test_partition_list_all_greater_or_equal():
+    """All elements greater than or equal to x."""
+    dll = DoubleLinkedList(5)
+    dll.append(6)
+    dll.append(7)
+    
+    dll.partition_list(2)
+    
+    assert _values_forward(dll) == [5, 6, 7]
+    assert _values_backward(dll) == [7, 6, 5]
+
+
+def test_partition_list_single_element_less():
+    """Single element less than x."""
+    dll = DoubleLinkedList(1)
+    
+    dll.partition_list(5)
+    
+    assert _values_forward(dll) == [1]
+    assert dll.head is dll.tail
+
+
+def test_partition_list_single_element_greater_or_equal():
+    """Single element greater than or equal to x."""
+    dll = DoubleLinkedList(5)
+    
+    dll.partition_list(3)
+    
+    assert _values_forward(dll) == [5]
+    assert dll.head is dll.tail
+
+
+def test_partition_list_preserves_relative_order():
+    """Relative order within partitions is preserved."""
+    dll = DoubleLinkedList(1)
+    dll.append(4)
+    dll.append(3)
+    dll.append(2)
+    dll.append(5)
+    dll.append(2)
+    
+    dll.partition_list(3)
+    
+    values = _values_forward(dll)
+    # Elements < 3: [1, 2, 2] in original relative order
+    # Elements >= 3: [4, 3, 5] in original relative order
+    assert values == [1, 2, 2, 4, 3, 5]
+
+
+def test_partition_list_bidirectional_links():
+    """After partition, prev/next links are correct."""
+    dll = DoubleLinkedList(3)
+    dll.append(1)
+    dll.append(4)
+    dll.append(2)
+    
+    dll.partition_list(3)
+    
+    # Expected: [1, 2, 3, 4]
+    assert _values_forward(dll) == [1, 2, 3, 4]
+    assert _values_backward(dll) == [4, 3, 2, 1]
+    assert dll.head.prev is None
+    assert dll.tail.next is None
+
+
+def test_partition_list_length_preserved():
+    """Length is preserved after partition."""
+    dll = DoubleLinkedList(3)
+    dll.append(1)
+    dll.append(4)
+    dll.append(2)
+    original_length = dll.length
+    
+    dll.partition_list(3)
+    
+    assert dll.length == original_length
+
+
+# ===================== partition_list_dummy_nodes tests =====================
+
+def test_partition_list_dummy_nodes_basic():
+    """Partition list (dummy nodes): elements < x come before elements >= x."""
+    dll = DoubleLinkedList(3)
+    dll.append(5)
+    dll.append(8)
+    dll.append(5)
+    dll.append(10)
+    dll.append(2)
+    dll.append(1)
+    dll.partition_list_dummy_nodes(5)
+    values = _values_forward(dll)
+    assert values == [3, 2, 1, 5, 8, 5, 10]
+
+def test_partition_list_dummy_nodes_all_less_than_x():
+    """All elements less than x (dummy nodes)."""
+    dll = DoubleLinkedList(1)
+    dll.append(2)
+    dll.append(3)
+    dll.partition_list_dummy_nodes(10)
+    assert _values_forward(dll) == [1, 2, 3]
+    assert _values_backward(dll) == [3, 2, 1]
+
+def test_partition_list_dummy_nodes_all_greater_or_equal():
+    """All elements greater than or equal to x (dummy nodes)."""
+    dll = DoubleLinkedList(5)
+    dll.append(6)
+    dll.append(7)
+    dll.partition_list_dummy_nodes(2)
+    assert _values_forward(dll) == [5, 6, 7]
+    assert _values_backward(dll) == [7, 6, 5]
+
+def test_partition_list_dummy_nodes_single_element_less():
+    """Single element less than x (dummy nodes)."""
+    dll = DoubleLinkedList(1)
+    dll.partition_list_dummy_nodes(5)
+    assert _values_forward(dll) == [1]
+    assert dll.head is dll.tail
+
+def test_partition_list_dummy_nodes_single_element_greater_or_equal():
+    """Single element greater than or equal to x (dummy nodes)."""
+    dll = DoubleLinkedList(5)
+    dll.partition_list_dummy_nodes(3)
+    assert _values_forward(dll) == [5]
+    assert dll.head is dll.tail
+
+def test_partition_list_dummy_nodes_preserves_relative_order():
+    """Relative order within partitions is preserved (dummy nodes)."""
+    dll = DoubleLinkedList(1)
+    dll.append(4)
+    dll.append(3)
+    dll.append(2)
+    dll.append(5)
+    dll.append(2)
+    dll.partition_list_dummy_nodes(3)
+    values = _values_forward(dll)
+    assert values == [1, 2, 2, 4, 3, 5]
+
+def test_partition_list_dummy_nodes_bidirectional_links():
+    """After partition (dummy nodes), prev/next links are correct."""
+    dll = DoubleLinkedList(3)
+    dll.append(1)
+    dll.append(4)
+    dll.append(2)
+    dll.partition_list_dummy_nodes(3)
+    assert _values_forward(dll) == [1, 2, 3, 4]
+    assert _values_backward(dll) == [4, 3, 2, 1]
+    assert dll.head.prev is None
+    assert dll.tail.next is None
+
+def test_partition_list_dummy_nodes_length_preserved():
+    """Length is preserved after partition (dummy nodes)."""
+    dll = DoubleLinkedList(3)
+    dll.append(1)
+    dll.append(4)
+    dll.append(2)
+    original_length = dll.length
+    dll.partition_list_dummy_nodes(3)
+    assert dll.length == original_length

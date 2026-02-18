@@ -333,26 +333,31 @@ class LinkedList:
     def swap_pairs(self):
         if self.head == None or self.head.next == None: 
             return
-        prev = Node(0) # Node prior the two nodes which swap
-        prev.next = self.head
+        
+        dummy = Node(0)  # Dummy node to simplify head changes
+        dummy.next = self.head
+        prev = dummy
         curr = self.head
-        move = self.head.next
         
-        while curr.next != None:
-            # Swap logic
-            curr.next = move.next
-            move.next = curr
-            prev.next = move
+        while curr and curr.next:
+            # Nodes to be swapped
+            first = curr
+            second = curr.next
             
-            # Slide the pointers
-            prev = curr
-            curr = curr.next
-            if curr == None:
-                break
-            move = curr.next
+            # Swap
+            prev.next = second
+            first.next = second.next
+            second.next = first
+            
+            # Move to next pair
+            prev = first
+            curr = first.next
         
-        self.head = prev.next
-        while prev.next != None:
-            prev = prev.next
-        self.tail = prev
+        self.head = dummy.next
+        
+        # Update tail
+        curr = self.head
+        while curr and curr.next:
+            curr = curr.next
+        self.tail = curr
 

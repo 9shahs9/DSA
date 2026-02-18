@@ -23,6 +23,11 @@ class DoubleLinkedList:
             temp = temp.next
         print("End of list")
 
+    def make_empty(self):
+        self.head = None 
+        self.tail = None 
+        self.length = 0
+
     def append(self, value):
         """Add node to end, maintaining both links."""
         new_node = Node(value)
@@ -159,14 +164,103 @@ class DoubleLinkedList:
         self.tail = t
 
 
+    def is_palindrome(self):
+        forward = self.head
+        backward = self.tail 
+        if (self.length == 0):
+            return True
+        for _ in range(self.length // 2):
+            if forward.value != backward.value:
+                return False
+            forward = forward.next
+            backward = backward.prev
+        return True 
+    
+    def partition_list(self, x):
+        left_init = False
+        right_init = False
+        curr = self.head
+        while curr:
+            if curr.value < x:
+                if left_init:
+                    left_dl.append(curr.value)
+                else:
+                    left_dl = DoubleLinkedList(curr.value)
+                    left_init = True
+            else:
+                if right_init:
+                    right_dl.append(curr.value)
+                else:
+                    right_dl = DoubleLinkedList(curr.value)
+                    right_init = True 
+            curr = curr.next 
+        self.make_empty()
+        if left_init:
+            left_curr = left_dl.head
+            while left_curr:
+                self.append(left_curr.value)
+                left_curr = left_curr.next
+        if right_init:
+            right_curr = right_dl.head
+            while right_curr:
+                self.append(right_curr.value)
+                right_curr = right_curr.next
+        
+    def partition_list_dummy_nodes(self, x):
+        l_dummy = Node(0)
+        r_dummy = Node(0)
+        d1 = l_dummy
+        d2 = r_dummy
+        curr = self.head 
+        while curr:
+            if curr.value < x:
+                l_dummy.next = curr 
+                curr.prev = l_dummy
+                l_dummy = curr 
+            else:
+                r_dummy.next = curr 
+                curr.prev = r_dummy
+                r_dummy = curr
+            curr = curr.next
+        r_dummy.next = None
+        l_dummy.next = d2.next 
+        if d2.next:
+            d2.next.prev = l_dummy
+        self.head = d1.next 
+        # Set tail to the last node of right partition if it exists, otherwise last of left
+        self.tail = r_dummy if d2.next else l_dummy
+        if self.head:
+            self.head.prev = None
+
+        
+        
+def _values_forward(dll):
+    values = []
+    curr = dll.head
+    while curr is not None:
+        values.append(curr.value)
+        curr = curr.next
+    return values
+
+def _values_backward(dll):
+    values = []
+    curr = dll.tail
+    while curr is not None:
+        values.append(curr.value)
+        curr = curr.prev
+    return values
+
 if __name__ == "__main__":
-    dll = DoubleLinkedList(1)
-    dll.append(3)
-    dll.insert(1,2)
-    dll.print_list()
-    node2 = dll.get(1)
-    print(node2.value )
-    print(node2.prev == dll.head)
-    print(node2.next is dll.tail)
-    print(dll.head.next is node2)
-    print(dll.tail.prev is node2)
+    dll = DoubleLinkedList(3)
+    dll.append(5)
+    dll.append(8)
+    dll.append(5)
+    dll.append(10)
+    dll.append(2)
+    dll.append(1)
+    dll.partition_list_dummy_nodes(5)
+    values = _values_forward(dll)
+    assert values == [3, 2, 1, 5, 8, 5, 10]
+    value = _values_backward(dll)
+    assert values == [10,5,8,5,1,2,3]
+
