@@ -86,14 +86,19 @@ class TestBinarySearchTree:
         assert bst.root.right.right.value == 80
     
     def test_insert_duplicate_values(self):
-        """Test inserting duplicate values."""
+        """Test inserting duplicate values returns False."""
         bst = BinarySearchTree()
-        bst.insert(10)
-        bst.insert(10)
+        result1 = bst.insert(10)
+        result2 = bst.insert(10)
         
-        # Duplicates should go right
+        # First insert should succeed
+        assert result1 is True
+        # Duplicate should fail
+        assert result2 is False
+        # Tree should only have one node
         assert bst.root.value == 10
-        assert bst.root.right.value == 10
+        assert bst.root.left is None
+        assert bst.root.right is None
     
     def test_insert_chain_left(self):
         """Test inserting values in descending order."""
@@ -256,3 +261,183 @@ class TestBinarySearchTreeEdgeCases:
         bst.display()
         captured = capsys.readouterr()
         assert captured.out is not None
+
+
+class TestBinarySearchTreeContains:
+    """Test cases for the contains method."""
+    
+    def test_contains_empty_tree(self):
+        """Test contains on empty tree."""
+        bst = BinarySearchTree()
+        assert bst.contains(10) is False
+    
+    def test_contains_single_node_found(self):
+        """Test contains when value is the root."""
+        bst = BinarySearchTree()
+        bst.insert(10)
+        assert bst.contains(10) is True
+    
+    def test_contains_single_node_not_found(self):
+        """Test contains when value is not in single node tree."""
+        bst = BinarySearchTree()
+        bst.insert(10)
+        assert bst.contains(5) is False
+        assert bst.contains(15) is False
+    
+    def test_contains_multiple_nodes_root(self):
+        """Test contains finds value at root."""
+        bst = BinarySearchTree()
+        values = [50, 30, 70]
+        for v in values:
+            bst.insert(v)
+        assert bst.contains(50) is True
+    
+    def test_contains_multiple_nodes_left(self):
+        """Test contains finds value in left subtree."""
+        bst = BinarySearchTree()
+        values = [50, 30, 70]
+        for v in values:
+            bst.insert(v)
+        assert bst.contains(30) is True
+    
+    def test_contains_multiple_nodes_right(self):
+        """Test contains finds value in right subtree."""
+        bst = BinarySearchTree()
+        values = [50, 30, 70]
+        for v in values:
+            bst.insert(v)
+        assert bst.contains(70) is True
+    
+    def test_contains_multiple_nodes_not_found(self):
+        """Test contains returns False for missing value."""
+        bst = BinarySearchTree()
+        values = [50, 30, 70]
+        for v in values:
+            bst.insert(v)
+        assert bst.contains(10) is False
+        assert bst.contains(40) is False
+        assert bst.contains(80) is False
+    
+    def test_contains_complex_tree(self):
+        """Test contains on larger, balanced tree."""
+        bst = BinarySearchTree()
+        values = [50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45]
+        for v in values:
+            bst.insert(v)
+        
+        # Test finding all inserted values
+        for v in values:
+            assert bst.contains(v) is True
+        
+        # Test values not in tree
+        assert bst.contains(5) is False
+        assert bst.contains(15) is False
+        assert bst.contains(55) is False
+        assert bst.contains(90) is False
+    
+    def test_contains_with_negative_values(self):
+        """Test contains with negative numbers."""
+        bst = BinarySearchTree()
+        values = [0, -10, 10, -5, -15, 5, 15]
+        for v in values:
+            bst.insert(v)
+        
+        for v in values:
+            assert bst.contains(v) is True
+        
+        assert bst.contains(-20) is False
+        assert bst.contains(20) is False
+    
+    def test_contains_left_chain(self):
+        """Test contains on tree with only left children."""
+        bst = BinarySearchTree()
+        values = [50, 40, 30, 20, 10]
+        for v in values:
+            bst.insert(v)
+        
+        for v in values:
+            assert bst.contains(v) is True
+        
+        assert bst.contains(5) is False
+        assert bst.contains(60) is False
+    
+    def test_contains_right_chain(self):
+        """Test contains on tree with only right children."""
+        bst = BinarySearchTree()
+        values = [10, 20, 30, 40, 50]
+        for v in values:
+            bst.insert(v)
+        
+        for v in values:
+            assert bst.contains(v) is True
+        
+        assert bst.contains(5) is False
+        assert bst.contains(60) is False
+    
+    def test_contains_zero(self):
+        """Test contains with zero value."""
+        bst = BinarySearchTree()
+        bst.insert(0)
+        bst.insert(-10)
+        bst.insert(10)
+        
+        assert bst.contains(0) is True
+        assert bst.contains(-10) is True
+        assert bst.contains(10) is True
+    
+    def test_contains_large_values(self):
+        """Test contains with large numbers."""
+        bst = BinarySearchTree()
+        large_vals = [1000000, 500000, 1500000, 250000, 750000]
+        for v in large_vals:
+            bst.insert(v)
+        
+        for v in large_vals:
+            assert bst.contains(v) is True
+        
+        assert bst.contains(999999) is False
+        assert bst.contains(2000000) is False
+    
+    def test_contains_duplicate_not_affects_search(self):
+        """Test that duplicate insertion attempts don't affect contains."""
+        bst = BinarySearchTree()
+        bst.insert(10)
+        bst.insert(5)
+        bst.insert(15)
+        
+        # Try to insert duplicates (they should fail)
+        bst.insert(10)
+        bst.insert(5)
+        
+        # Values should still be found
+        assert bst.contains(10) is True
+        assert bst.contains(5) is True
+        assert bst.contains(15) is True
+    
+    def test_contains_sequential_values(self):
+        """Test contains with sequential values."""
+        bst = BinarySearchTree()
+        values = [50, 25, 75, 10, 30, 60, 90]
+        for v in values:
+            bst.insert(v)
+        
+        # All inserted values should be found
+        for v in values:
+            assert bst.contains(v) is True
+        
+        # All gaps should not be found
+        for v in [5, 15, 20, 35, 45, 55, 65, 80, 100]:
+            assert bst.contains(v) is False
+        
+    def test_contains_return_type(self):
+        """Test that contains returns a boolean."""
+        bst = BinarySearchTree()
+        bst.insert(10)
+        
+        result_true = bst.contains(10)
+        result_false = bst.contains(5)
+        
+        assert isinstance(result_true, bool)
+        assert isinstance(result_false, bool)
+        assert result_true is True
+        assert result_false is False

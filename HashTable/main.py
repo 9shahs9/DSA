@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 class HashTable:
     def __init__(self, size=7):
         self.size = size
@@ -72,3 +73,48 @@ h.print_table()
 print(h.get_item("Sarojini"))
 
 print(h.get_keys())
+=======
+class HashTable :
+    def __init__(self, size = 7):
+        self.data_map = [None] * size 
+    
+    def __hash (self, key):
+        my_hash = 0
+        for ch in key: 
+            my_hash = (my_hash + ord(ch)*23) % len(self.data_map)
+        return my_hash
+    
+    def print_table(self):
+        for i, val in enumerate(self.data_map):
+            print (i, " : " , val)
+
+    def set(self, key, value):
+        index = self.__hash(key)
+        if self.data_map[index] == None:
+            self.data_map[index] = []
+        self.data_map[index].append([key, value])
+    
+    def get(self, key):
+        index = self.__hash(key)
+        #data_list_at_index
+        data_list = self.data_map[index]
+        if data_list == None: 
+            return None 
+        for data in data_list:
+            if data[0] == key:
+                return data[1] 
+        return None 
+    
+
+
+
+my_hash_table = HashTable()
+my_hash_table.set('Shashank', 14)
+my_hash_table.set('Srimanasa', 21)
+my_hash_table.set('Akshar', 24)
+my_hash_table.set('Shikhar', 12)
+my_hash_table.print_table()
+
+print(my_hash_table.get('Shashank'))
+        
+>>>>>>> Stashed changes

@@ -16,22 +16,36 @@ class BinarySearchTree:
         new_node = Node(value)
         if self.is_empty():
             self.root = new_node 
-            return 
+            return True 
         curr_node = self.root
-        done = False 
-        while ( not done):
+        while (True):
+            if new_node.value == curr_node.value:
+                return False 
             if curr_node.value > value: 
-                if curr_node.left:
-                    curr_node = curr_node.left 
-                else:
+                if not curr_node.left:
                     curr_node.left = new_node
-                    done = True 
+                    return True  
+                curr_node = curr_node.left
             else:
-                if curr_node.right:
-                    curr_node = curr_node.right
-                else:
+                if not curr_node.right:
                     curr_node.right = new_node
-                    done = True
+                    return True
+                curr_node = curr_node.right
+    
+    def contains(self, value):
+        if not self.root :
+            return False 
+        curr = self.root
+        while (curr):
+            if curr.value == value:
+                return True 
+            if curr.value < value:
+                curr = curr.right 
+            else:
+                curr = curr.left 
+        return False 
+
+
     
     def display(self):
         """Pretty print the binary search tree structure"""
@@ -61,7 +75,9 @@ class BinarySearchTree:
 
 
 tree = BinarySearchTree()
-l = [47, 21, 76, 18, 52, 82, 27]
+l = [47, 21, 76, 18, 52, 82, 27, 5, 27, 5]
 for v in l:
     tree.insert(v)
 tree.display()
+
+print(tree.contains(52))
